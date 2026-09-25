@@ -1,3 +1,62 @@
+# name: JEVGuard Docker
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   docker:
+#     name: Build and Test Docker Image
+#     runs-on: ubuntu-latest
+
+#     permissions:
+#       contents: read
+#       packages: write
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v6
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
+
+#       - name: Build Docker image
+#         run: |
+#           docker build \
+#             -t jevguard-cloud:test \
+#             .
+
+#       - name: Start container
+#         run: |
+#           docker run \
+#             -d \
+#             --name jevguard-test \
+#             -p 8000:8000 \
+#             -e GROQ_API_KEY=test-key \
+#             -e TYPESAFE_API_KEY=test-key \
+#             jevguard-cloud:test
+
+#       - name: Wait for application
+#         run: |
+#           sleep 10
+
+#       - name: Health check
+#         run: |
+#           curl --fail http://localhost:8000/health
+
+#       - name: Container logs
+#         if: always()
+#         run: |
+#           docker logs jevguard-test
+
+#       - name: Stop container
+#         if: always()
+#         run: |
+#           docker rm -f jevguard-test
+
+## the above is just to test whether the docker cotainer working or not
+
 name: JEVGuard Docker
 
 on:
@@ -5,9 +64,13 @@ on:
     branches:
       - main
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   docker:
-    name: Build and Test Docker Image
+    name: Build, Test and Publish Docker Image
     runs-on: ubuntu-latest
 
     permissions:
@@ -21,10 +84,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Docker image
         run: |
           docker build \
-            -t jevguard-cloud:test \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
             .
 
       - name: Start container
@@ -35,7 +105,7 @@ jobs:
             -p 8000:8000 \
             -e GROQ_API_KEY=test-key \
             -e TYPESAFE_API_KEY=test-key \
-            jevguard-cloud:test
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Wait for application
         run: |
@@ -54,3 +124,8 @@ jobs:
         if: always()
         run: |
           docker rm -f jevguard-test
+
+      - name: Push Docker image
+        run: |
+          docker push \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
