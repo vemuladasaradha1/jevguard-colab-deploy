@@ -8,7 +8,7 @@ from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
 
 from .config import Settings
 from .state import AgentState
-import os
+
 #import os
 #load_dotenv()
 

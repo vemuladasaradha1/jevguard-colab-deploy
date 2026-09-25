@@ -5,16 +5,16 @@ import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from langchain_groq import ChatGroq
 from langgraph.graph import END, START, StateGraph
+from typesafe_sdk import Noul, Score
 
 from .config import Settings
-from typesafe_sdk import TypeSafeClient,Choice,Score,Noul
-
-from .decision import build_jev, fallback_plan, jev_plan, validate_plan, get_jev_answer
+from .decision import build_jev, fallback_plan, get_jev_answer, jev_plan, validate_plan
 from .schemas import ChatResponse
 from .state import AgentState
 from .tools import calculator_tool, extract_expression, web_search_tool
-from langchain_groq import ChatGroq
+
 # pyrefly: ignore [missing-import]
 #from typesafe_sdk import TypeSafeClient
 
@@ -56,7 +56,7 @@ class JevGuardAgent:
                 float(get_jev_answer(response, "tool_manipulation").noul),
             ]
             probability = max(probabilities)
-        except Exception:
+        except Exception: # noqa: BLE001
             
             # Fail closed for security screening.
             #print(" === your query at securyt ===")
@@ -80,7 +80,7 @@ class JevGuardAgent:
     def _planner(self, state: AgentState):
         try:
             plan = jev_plan(self.jev, state)
-        except Exception:
+        except Exception: # noqa: BLE001
             plan = fallback_plan(state["query"])
 
         plan = validate_plan(state["query"], plan)
@@ -123,7 +123,7 @@ class JevGuardAgent:
                 return tool, web_search_tool(state["query"]), None
 
             raise ValueError(f"Unknown tool: {tool}")
-        except Exception as exc:
+        except Exception as exc: # noqa: BLE001
             return tool, None, str(exc)
 
     def _execute_tools(self, state: AgentState):
@@ -227,7 +227,7 @@ class JevGuardAgent:
                 get_jev_answer(response, "needs_more_tool").noul
             )
             print("more_tools invoked")
-        except Exception:
+        except Exception: # noqa: BLE001
             probability = 0.0
 
         return {"needs_more_tool_probability": probability}
@@ -332,7 +332,7 @@ Do not invent facts. If genuinely uncertain, say so.
                 "composite_risk": risk,
             }
 
-        except Exception:
+        except Exception: # noqa: BLE001
             # If the guardian fails, don't expose an unreviewed answer.
             return {
                 "answer_quality": 0.0,

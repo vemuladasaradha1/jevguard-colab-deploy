@@ -4,15 +4,12 @@
 # Posted by Ivan, modified by community. See post 'Timeline' for change history
 # Retrieved 2026-09-25, License - CC BY-SA 4.0
 
-import app
 #from app.main import app
 
 
 
 
 def test_imports():
-    from app.config import Settings
-    from app.state import AgentState
     from app.tools import calculator_tool
 
     assert calculator_tool("25 * 48") == "1200"

@@ -8,7 +8,6 @@ from typing import Any
 
 from ddgs import DDGS
 
-
 _ALLOWED_BINOPS = {
     ast.Add: op.add,
     ast.Sub: op.sub,
@@ -71,7 +70,7 @@ def extract_expression(query: str) -> str | None:
     m = re.search(
         r"(\d+(?:\.\d+)?)\s*(?:times|multiplied by|x)\s*(\d+(?:\.\d+)?)",
         query,
-        flags=re.I,
+        flags=re.IGNORECASE,
     )
     if m:
         return f"{m.group(1)} * {m.group(2)}"
@@ -79,7 +78,7 @@ def extract_expression(query: str) -> str | None:
     m = re.search(
         r"(\d+(?:\.\d+)?)\s*(?:divided by)\s*(\d+(?:\.\d+)?)",
         query,
-        flags=re.I,
+        flags=re.IGNORECASE,
     )
     if m:
         return f"{m.group(1)} / {m.group(2)}"
