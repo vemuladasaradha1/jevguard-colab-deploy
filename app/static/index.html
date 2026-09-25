@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JevGuard — Decision-Controlled AI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <canvas id="stars"></canvas>
+
+  <div class="nebula nebula-a"></div>
+  <div class="nebula nebula-b"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="orb">
+          <span></span><span></span><span></span>
+        </div>
+        <div>
+          <div class="brand-name">JEV<span>GUARD</span></div>
+          <div class="brand-sub">DECISION CONTROLLED AI</div>
+        </div>
+      </div>
+
+      <div class="system-status">
+        <span class="pulse"></span>
+        <span>ONLINE</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">JEV × LANGGRAPH × GROQ</div>
+      <h1>Ask the <span>decision engine.</span></h1>
+      <p>
+        Jev decides what the agent should do. LangGraph orchestrates the flow.
+        Groq generates the final response. Tools supply real evidence when needed.
+      </p>
+
+      <div class="chips">
+        <button class="chip" data-query="What is LangGraph?">Explain LangGraph</button>
+        <button class="chip" data-query="What is 125 multiplied by 48?">Calculate 125 × 48</button>
+        <button class="chip" data-query="What is the latest news about AI agents?">Search current AI news</button>
+      </div>
+    </section>
+
+    <section class="console">
+      <div class="console-head">
+        <div>
+          <span class="dot red"></span>
+          <span class="dot amber"></span>
+          <span class="dot green"></span>
+          <span class="console-title">JEVGUARD // COMMAND DECK</span>
+        </div>
+        <span class="model">JEV-1.13.0 / GROQ</span>
+      </div>
+
+      <div id="messages" class="messages">
+        <div class="message assistant">
+          <div class="avatar">J</div>
+          <div class="bubble">
+            <div class="meta">JEVGUARD <span>READY</span></div>
+            <p>Systems online. Send me a question and I'll decide whether to answer directly, calculate, search, or combine tools.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <textarea id="query" rows="2" placeholder="Transmit your query..."></textarea>
+        <button id="send" class="send">
+          <span>EXECUTE</span>
+          <span class="arrow">↗</span>
+        </button>
+      </div>
+
+      <div class="telemetry">
+        <span id="status">READY</span>
+        <span>•</span>
+        <span id="latency">0 ms</span>
+        <span>•</span>
+        <span id="tools">TOOLS: NONE</span>
+      </div>
+    </section>
+
+    <footer>
+      <span>JEVGUARD</span>
+      <span>Decision layer → validation → tools → generation → guardian</span>
+    </footer>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+langgraph
+langchain-groq
+langsmith
+typesafe-sdk
+ddgs
+sympy
+python-dotenv
+httpx
